@@ -19,8 +19,9 @@ function connect(host, port)
 end
 
 function post(tag, data)
-    if is_connect() then
-        return nil
+    local connected, err = is_connect()
+    if err then
+        return nil, err
     end
 
     local msg = msgpack.pack({tag, os.time(), data})
@@ -28,13 +29,18 @@ function post(tag, data)
 end
 
 function close()
-    if is_connect() then
-        return nil
+    local connected, err = is_connect()
+    if err then
+        return nil, err
     end
 
     return fluent:close()
 end
 
 function is_connect()
-    return fluent == nil
+    if fluent then
+        return 1 
+    else
+        return nil, "socket is nil" 
+    end
 end

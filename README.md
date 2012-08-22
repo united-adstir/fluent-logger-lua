@@ -11,9 +11,9 @@
 ## Quickstart
 
     local fluent = require('fluent.logger')
-    local rs_connect = fluent.connect('127.0.0.1', 24224)
-    local rs_post = fluent.post('test.hoge', { hoge = 'aaa', foo = 'bbb' })
-    local rs_close = fluent.close()
+    local rs_connect, err_connect = fluent.connect('127.0.0.1', 24224)
+    local rs_post, err_post = fluent.post('test.hoge', { hoge = 'aaa', foo = 'bbb' })
+    local rs_close, err_close = fluent.close()
 
 ## License
 Apache License, Version 2.0

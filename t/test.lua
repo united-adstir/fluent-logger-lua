@@ -12,5 +12,9 @@ else
     print(rs_post)
 end
 
-local rs_close = fluent.close()
-print(rs_close)
+local rs_close, err_close = fluent.close()
+if err_post then
+    error(err_post)
+else
+    print(rs_post)
+end
