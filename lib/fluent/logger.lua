@@ -1,3 +1,9 @@
+-----------------------------------------------------------------------------
+-- Fluent Logger for Lua
+-- Author: Tatsuya Fukata 
+-- Version: v0.0.1
+-----------------------------------------------------------------------------
+
 local os = require('os')
 local socket = require('socket')
 local msgpack = require('msgpack')
@@ -8,13 +14,26 @@ local fluent
 
 function connect(host, port) 
     fluent = socket.connect(host or '127.0.0.1', port or 24224)
+    return fluent
 end
 
-function post(tag, data) 
+function post(tag, data)
+    if is_connect() then
+        return nil
+    end
+
     local msg = msgpack.pack({tag, os.time(), data}) 
-    fluent:send(msg)
+    return fluent:send(msg)
 end
 
-function close() 
-    fluent:close()
+function close()
+    if is_connect() then
+        return nil
+    end
+
+    return fluent:close()
+end
+
+function is_connect()
+    return fluent == nil
 end
