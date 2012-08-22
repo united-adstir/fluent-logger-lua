@@ -12,9 +12,10 @@ module('fluent.logger')
 
 local fluent
 
-function connect(host, port) 
-    fluent = socket.connect(host or '127.0.0.1', port or 24224)
-    return fluent
+function connect(host, port)
+    local err; 
+    fluent, err = socket.connect(host or '127.0.0.1', port or 24224)
+    return fluent, err
 end
 
 function post(tag, data)
@@ -22,7 +23,7 @@ function post(tag, data)
         return nil
     end
 
-    local msg = msgpack.pack({tag, os.time(), data}) 
+    local msg = msgpack.pack({tag, os.time(), data})
     return fluent:send(msg)
 end
 
