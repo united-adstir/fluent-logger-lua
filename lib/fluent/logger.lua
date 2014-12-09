@@ -12,9 +12,11 @@ module('fluent.logger')
 
 local fluent
 
-function connect(host, port)
-    local err; 
-    fluent, err = socket.connect(host or '127.0.0.1', port or 24224)
+function connect(host, port, timeout)
+    local tcp = socket.tcp()
+    tcp:settimeout(timeout)
+    local ok, err = tcp:connect(host or '127.0.0.1', port or 24224)
+    if ok then fluent = tcp end
     return fluent, err
 end
 
